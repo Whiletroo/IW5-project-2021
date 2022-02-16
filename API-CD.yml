@@ -1,0 +1,56 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  dotNetFramework: 'net6.0'
+  dotNetVersion: '6.0.x'
+  targetRuntime: 'win-x64'
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      version: $(dotNetVersion)
+      includePreviewVersions: true
+
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+
+  - task: VisualStudioTestPlatformInstaller@1
+    inputs:
+      packageFeedSelector: 'nugetOrg'
+      versionSelector: 'latestPreRelease'
+
+  - task: DotNetCoreCLI@2
+    name: "Publish"
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      modifyOutputPath: false
+      projects: '**/Tournament.API.csproj'
+      arguments: '--configuration $(BuildConfiguration) --framework $(dotNetFramework) --output $(Build.ArtifactStagingDirectory)/api'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/api'
+      ArtifactName: 'API'
+      publishLocation: 'Container'
+
+  - task: AzureWebApp@1
+    inputs:
+      azureSubscription: 'Azure pro studenty(ecf39fd6-aeba-44e6-bd04-5ceda47e0c9b)'
+      appType: 'webApp'
+      appName: 'app-iw5-2021-team-0008-api'
+      package: '$(Build.ArtifactStagingDirectory)/api/api.zip'
+      deploymentMethod: 'zipDeploy'

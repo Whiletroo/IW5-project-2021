@@ -1,0 +1,58 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- main
+- develop
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Develop'
+  dotNetFramework: 'net6.0'
+  dotNetVersion: '6.0.x'
+  targetRuntime: 'win-x64'
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      version: $(dotNetVersion)
+      includePreviewVersions: true
+
+  - task: NuGetToolInstaller@1
+
+  - task: NuGetCommand@2
+    inputs:
+      restoreSolution: '$(solution)'
+
+  - task: VisualStudioTestPlatformInstaller@1
+    inputs:
+      packageFeedSelector: 'nugetOrg'
+      versionSelector: 'latestPreRelease'
+
+  - task: DotNetCoreCLI@2
+    name: "Build"
+    inputs:
+      command: 'build'
+      projects: '**/Tournament.API.csproj'
+
+  - task: DotNetCoreCLI@2
+    name: "DAL_Tests"
+    inputs:
+      command: 'test'
+      projects: '**/Tournament.DAL.Tests.csproj'
+
+  - task: DotNetCoreCLI@2
+    name: "API_IntegrationTests"
+    inputs:
+      command: 'test'
+      projects: '**/Tournament.API.IntegrationTests.csproj'
+
+  - task: DotNetCoreCLI@2
+    name: "API_EndToEndTests"
+    inputs:
+      command: 'test'
+      projects: '**/Tournament.API.Tests.csproj'
