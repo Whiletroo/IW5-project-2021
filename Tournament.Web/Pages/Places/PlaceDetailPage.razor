@@ -1,0 +1,78 @@
+﻿@page "/places/{Id:guid}"
+@namespace Tournament.Web.Pages
+@using Tournament.Common.Models.Enums
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits PageBase
+@inject IStringLocalizer<PlaceDetailPageResources> PlaceDetailPageLocalizer
+
+@if (Place != null)
+{
+    <div class="container" style="padding-top: 1em">
+        
+        <div class="row">
+            <div class="col col-12 col-lg-6">
+                <h2 class="display-3">@Place.Name</h2>
+                <div style="width: 60%;">@Place.Description</div>
+            </div>
+            <div class="col align-items-end d-flex">
+                <button class="btn btn-info mt-2 mt-lg-0" style="white-space: nowrap;" onclick="location.href = '@($"/places/edit/{Place.Id}")'">
+                    <span class="oi oi-pencil"></span>
+                    @PlaceDetailPageLocalizer["Edit_Button"]
+                </button>
+            </div>
+        </div>
+        
+        <div class="row" style="padding-top: 2em">
+            <div class="col">
+                @if (Place.Matches.Count != 0)
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="row" style="border-radius: 10px 0 0 0">@PlaceDetailPageLocalizer["Label_Team1"]</th>
+                        <th scope="row">@PlaceDetailPageLocalizer["Label_Team2"]</th>
+                        <th scope="row">@PlaceDetailPageLocalizer["Label_Time"]</th>
+                        <th scope="row"  style="border-radius: 0 10px 0 0;">@PlaceDetailPageLocalizer["Label_Result"]</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var match in Place.Matches)
+                    {
+                        <tr>
+                            <td style="vertical-align: middle;">
+                                <span>@match.Team1Name</span>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <span>@match.Team2Name</span>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <span>@match.DateTime</span>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                @if (match.Result == Results.Team1)
+                                {
+                                    <span class="text-success font-weight-bold">@PlaceDetailPageLocalizer["Result_Team1"]</span>
+                                }
+                                else if (match.Result == Results.Team2)
+                                {
+                                    <span class="text-success font-weight-bold">@PlaceDetailPageLocalizer["Result_Team2"]</span>
+                                }
+                                else if (match.Result == Results.Draw)
+                                {
+                                    <span class="text-info font-weight-bold">@PlaceDetailPageLocalizer["Result_Draw"]</span>
+                                }
+                                else
+                                {
+                                    <span>@PlaceDetailPageLocalizer["Result_None"]</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+            </div>
+        </div>
+    </div>
+}

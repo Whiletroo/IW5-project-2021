@@ -1,0 +1,82 @@
+﻿@page "/matches"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@using Tournament.Common.Models.Enums
+@inherits PageBase
+@layout ListLayout
+@inject IStringLocalizer<MatchListPageResources> MatchListPageLocalizer
+
+<div class="container" style="padding-top: 1em">
+    <div class="row">
+        <div class="col col-12 col-lg-8">
+            <h1 class="display-3">@MatchListPageLocalizer["Page_Title"]</h1>
+        </div>
+        <div class="col d-flex align-items-center justify-content-start">
+            <button class="btn btn-success align-middle mb-2 mb-lg-0" onclick="location.href = '@($"/matches/create")'" style="height: 38px;">
+                <span class="oi oi-plus"></span>
+                @MatchListPageLocalizer["Create_Button"]
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div>
+                @if (MatchList.Count != 0)
+                {
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="row" style="border-radius: 10px 0 0 0">@MatchListPageLocalizer["TableHead_Team1Name"]</th>
+                            <th scope="row">@MatchListPageLocalizer["TableHead_Team2Name"]</th>
+                            <th scope="row">@MatchListPageLocalizer["TableHead_DateTime"]</th>
+                            <th scope="row">@MatchListPageLocalizer["TableHead_Result"]</th>
+                            <th scope="row" style="width: 1%; white-space: nowrap; border-radius: 0 10px 0 0;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var match in MatchList)
+                        {
+                            <tr>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/matches/{match.Id}")'">
+                                    <span>@match.Team1Name</span>
+                                </td>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/matches/{match.Id}")'">
+                                    <span>@match.Team2Name</span>
+                                </td>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/matches/{match.Id}")'">
+                                    <span>@match.DateTime</span>
+                                </td>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/matches/{match.Id}")'">
+                                    @if (match.Result == Results.Team1)
+                                    {
+                                        <span class="text-success font-weight-bold">@MatchListPageLocalizer["Result_Team1"]</span>
+                                    }
+                                    else if (match.Result == Results.Team2)
+                                    {
+                                        <span class="text-success font-weight-bold">@MatchListPageLocalizer["Result_Team2"]</span>
+                                    }
+                                    else if (match.Result == Results.Draw)
+                                    {
+                                        <span class="text-info font-weight-bold">@MatchListPageLocalizer["Result_Draw"]</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@MatchListPageLocalizer["Result_None"]</span>
+                                    }
+                                </td>
+                                <td style="vertical-align: middle; float: right;">
+                                    <button class="btn btn-info" style="white-space: nowrap;" onclick="location.href = '@($"/matches/edit/{match.Id}")'">
+                                        <span class="oi oi-pencil"></span>
+                                        @MatchListPageLocalizer["Edit_Button"]
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>

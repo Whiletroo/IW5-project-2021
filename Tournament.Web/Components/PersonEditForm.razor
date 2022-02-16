@@ -1,0 +1,89 @@
+﻿@namespace Tournament.Web
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits Tournament.Web.Pages.PageBase
+@inject IStringLocalizer<PersonEditPageResources> PersonEditFormLocalizer
+
+<EditForm Model="@Data">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label class="w-100">
+            @PersonEditFormLocalizer["Label_Firstname"]
+            <InputText @bind-Value="@Data.FirstName" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.FirstName)"/>
+            </small>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="w-100">
+            @PersonEditFormLocalizer["Label_Lastname"]
+            <InputText @bind-Value="@Data.LastName" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.LastName)"/>
+            </small>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="w-100">
+            @PersonEditFormLocalizer["Label_Description"]
+            <InputTextArea @bind-Value="@Data.Description" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.Description)"/>
+            </small>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="w-100">
+            @PersonEditFormLocalizer["Label_PhotoURL"]
+            <InputText @bind-Value="@Data.PhotoURL" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.PhotoURL)"/>
+            </small>
+        </label>
+        <img src="@Data.PhotoURL" height="100px"/>
+        <small class="form-text text-danger">
+            <ValidationMessage For="@(() => Data.PhotoURL)"/>
+        </small>
+    </div>
+
+    <div class="form-groub">
+        <label class="w-100">
+            @PersonEditFormLocalizer["Label_Team"]
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <InputSelect @bind-Value="SelectedTeam" class="form-control" >
+                        <option value="@Guid.Empty">None</option>
+                        @foreach (var team in TeamList)
+                        {
+                            <option value="@team.Id">@team.TeamName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </label>
+    </div>
+
+    @if (Id != Guid.Empty)
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Update">
+            <span class="oi oi-pencil"></span>
+            @PersonEditFormLocalizer["Edit_Button"]
+        </button>
+
+        <button @onclick="@Delete" class="btn btn-danger ml-1">
+            <span class="oi oi-trash"></span>
+            @PersonEditFormLocalizer["Delete_Button"]
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Create">
+            <span class="oi oi-plus"></span>
+            @PersonEditFormLocalizer["Create_Button"]
+        </button>
+    }
+</EditForm>

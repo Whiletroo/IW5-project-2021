@@ -1,0 +1,74 @@
+﻿@page "/persons"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits PageBase
+@layout ListLayout
+@inject IStringLocalizer<PersonListPageResources> PersonListPageLocalizer
+
+<div class="container" style="padding-top: 1em">
+
+    <div class="row">
+        <div class="col col-12 col-lg-3">
+            <h1 class="display-3">@PersonListPageLocalizer["Page_Title"]</h1>
+        </div>
+        <div class="col d-flex align-items-center justify-content-start">
+            <button class="btn btn-success align-middle mb-2 mb-lg-0" onclick="location.href = '@($"/persons/create")'" style="height: 38px;">
+                <span class="oi oi-plus"></span>
+                @PersonListPageLocalizer["Create_Button"]
+            </button>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            <div class="row" style="margin-left: inherit;padding-right: 1.2em;">
+                <button class="btn btn-info" id="my-searchbutton" @onclick="OnSearch"><span class="oi oi-magnifying-glass"></span>@PersonListPageLocalizer["Search_Button"]</button>
+                <input placeholder=@PersonListPageLocalizer["Search_Placeholder"] class="form-row" @bind-value="@SearchString" style="flex-grow: 1"/>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col">
+            <div>
+                @if (PersonList.Count != 0)
+            {
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="row" style="border-radius: 10px 0 0 0">@PersonListPageLocalizer["TableHead_Image"]</th>
+                            <th scope="row">@PersonListPageLocalizer["TableHead_Firstname"]</th>
+                            <th scope="row">@PersonListPageLocalizer["TableHead_Lastname"]</th>
+                            <th scope="row" style="width:1%;white-space:nowrap;border-radius: 0 10px 0 0;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var person in PersonList)
+                        {
+                            <tr>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/persons/{person.Id}")'">
+                                    <img src="@person.PhotoURL" height="120px"/>
+                                </td>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/persons/{person.Id}")'">
+                                    <span></span>@person.FirstName
+                                </td>
+                                <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/persons/{person.Id}")'">
+                                    <span></span>@person.LastName
+                                </td>
+                                <td style="vertical-align: middle;float: right;">
+                                    <button class="btn btn-info" style="white-space: nowrap; margin-top: 2.4em;" onclick="location.href = '@($"/persons/edit/{person.Id}")'">
+                                        <span class="oi oi-pencil"></span>
+                                        @PersonListPageLocalizer["Edit_Button"]
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            </div>
+        </div>
+    </div>
+
+</div>

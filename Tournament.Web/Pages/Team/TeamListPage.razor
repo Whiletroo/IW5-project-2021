@@ -1,0 +1,73 @@
+﻿@page "/teams"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@using Tournament.Web.Shared
+@inherits PageBase
+@layout ListLayout
+@inject IStringLocalizer<TeamListPageResources> TeamListPageLocalizer
+
+
+
+<div class="container" style="padding-top: 1em">
+    <div class="row">
+        <div class="col col-12 col-lg-3">
+            <h1 class="display-3">@TeamListPageLocalizer["Page_Title"]</h1>
+        </div>
+        <div class="col d-flex align-items-center justify-content-start">
+            <button class="btn btn-success align-middle mb-2 mb-lg-0" onclick="location.href = '@($"/teams/create")'" style="height: 38px;">
+                <span class="oi oi-plus"></span>
+                @TeamListPageLocalizer["Create_Button"]
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-12 col-lg-8">
+            <div class="row">
+                <div class="col">
+                    <div class="row" style="margin-left: inherit; padding-right: 1.2em;">
+                        <button class="btn btn-info" id="my-searchbutton" @onclick="OnSearch"><span class="oi oi-magnifying-glass"></span>@TeamListPageLocalizer["Search_Button"]</button>
+                        <input placeholder=@TeamListPageLocalizer["Search_Placeholder"] class="form-row" @bind-value="@SearchString" style="flex-grow: 1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <div>
+                        @if (TeamList.Count != 0)
+                        {
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th scope="row" style="border-radius: 10px 0 0 0">@TeamListPageLocalizer["TableHead_Logo"]</th>
+                                    <th scope="row">@TeamListPageLocalizer["TableHead_Title"]</th>
+                                    <th scope="row" style="width:1%;white-space:nowrap;border-radius: 0 10px 0 0;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var team in TeamList)
+                                {
+                                    <tr>
+                                        <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/teams/{team.Id}")'">
+                                            <img src="@team.LogoURL" height="50"/>
+                                        </td>
+                                        <td style="vertical-align: middle; cursor: pointer;" onclick="location.href = '@($"/teams/{team.Id}")'">
+                                            <span></span>@team.TeamName
+                                        </td>
+                                        <td style="vertical-align: middle;float: right;">
+                                            <button class="btn btn-info" style="white-space:nowrap;" onclick="location.href = '@($"/teams/edit/{team.Id}")'">
+                                                <span class="oi oi-pencil"></span>
+                                                @TeamListPageLocalizer["Edit_Button"]
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

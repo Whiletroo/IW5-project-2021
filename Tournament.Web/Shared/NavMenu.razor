@@ -1,0 +1,54 @@
+﻿@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@namespace Tournament.Web.Shared
+@inject IStringLocalizer<NavMenuResources> NavMenuLocalizer
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="mynavbar" aria-label="Eighth navbar example">
+    <div class="container">
+        <a class="navbar-brand" href="#">@NavMenuLocalizer["ProjectName_Label"]</a>
+        <button @onclick="ToggleNavMenu" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="@NavMenuCssClass navbar-collapse" @onclick="ToggleNavMenu" id="navbarsExample07">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> @NavMenuLocalizer["Home_Label"]
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/persons">
+                        <span class="oi oi-person" aria-hidden="true"></span> @NavMenuLocalizer["Persons_Label"]
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/places">
+                        <span class="oi oi-location" aria-hidden="true"></span> @NavMenuLocalizer["Places_Label"]
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/matches">
+                        <span class="oi oi-calendar" aria-hidden="true"></span> @NavMenuLocalizer["Matches_Label"]
+                    </NavLink>
+                </li>
+                <li class="nav-item">
+                    <NavLink class="nav-link" href="/teams">
+                        <span class="oi oi-people" aria-hidden="true"></span> @NavMenuLocalizer["Teams_Label"]
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

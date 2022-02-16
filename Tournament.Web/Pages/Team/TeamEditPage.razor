@@ -1,0 +1,16 @@
+﻿@page "/teams/edit/{Id:guid}"
+@page "/teams/create"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits PageBase
+@inject IStringLocalizer<TeamEditPageResources> TeamEditPageLocalizer
+
+<div class="container mt-4 pb-2">
+    <div class="row justify-content-center">
+        <div class="col col-12 col-lg-8">
+            <h1 class="mb-4">@(Id == Guid.Empty ? TeamEditPageLocalizer["CreatePage_Title"] : TeamEditPageLocalizer["EditPage_Title"])</h1>
+            <TeamEditForm id="@Id" OnModification="NavigateBack" />
+        </div>
+    </div>
+</div>

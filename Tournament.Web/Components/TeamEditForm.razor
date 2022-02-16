@@ -1,0 +1,80 @@
+﻿@namespace Tournament.Web
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@using Netizine.Enums
+@using Tournament.Common.Models
+@inherits Tournament.Web.Pages.PageBase
+@inject IStringLocalizer<TeamEditPageResources> TeamEditFormLocalizer
+
+<EditForm Model="@Data">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <label class="w-100">
+            @TeamEditFormLocalizer["Label_Title"]
+            <InputText @bind-Value="@Data.TeamName" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.TeamName)"/>
+            </small>
+        </label>
+    </div>
+
+    <div class="form-groub">
+        <label class="w-100">
+            @TeamEditFormLocalizer["Label_Country"]
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <InputSelect @bind-Value="Data.RegistrationCountry" class="form-control">
+                        @foreach (var country in Enum.GetValues(typeof(Country)))
+                        {
+                            <option value="@country">@country</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="w-100">
+            @TeamEditFormLocalizer["Label_Description"]
+            <InputTextArea @bind-Value="@Data.Description" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.Description)"/>
+            </small>
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label class="w-100">
+            @TeamEditFormLocalizer["Label_LogoURL"]
+            <InputText @bind-Value="@Data.LogoURL" class="form-control" />
+            <small class="form-text text-danger">
+                <ValidationMessage For="@(() => Data.LogoURL)"/>
+            </small>
+        </label>
+        <img src="@Data.LogoURL" height="100px"/>
+        <small class="form-text text-danger">
+            <ValidationMessage For="@(() => Data.LogoURL)"/>
+        </small>
+    </div>
+
+    @if (Id != Guid.Empty)
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Update">
+            <span class="oi oi-pencil"></span>
+            @TeamEditFormLocalizer["Edit_Button"]
+        </button>
+
+        <button @onclick="@Delete" class="btn btn-danger ml-1">
+            <span class="oi oi-trash"></span>
+            @TeamEditFormLocalizer["Delete_Button"]
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Create">
+            <span class="oi oi-plus"></span>
+            @TeamEditFormLocalizer["Create_Button"]
+        </button>
+    }
+</EditForm>

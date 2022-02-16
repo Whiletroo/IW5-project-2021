@@ -1,0 +1,12 @@
+﻿@page "/matches/edit/{Id:guid}"
+@page "/matches/create"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits PageBase
+@inject IStringLocalizer<MatchEditPageResources> MatchEditPageLocalizer
+
+<div class="container mt-4 pb-2">
+    <h1 class="mb-4">@(Id == Guid.Empty ? MatchEditPageLocalizer["CreatePage_Title"] : MatchEditPageLocalizer["EditPage_Title"])</h1>
+    <MatchEditForm id="@Id" OnModification="NavigateBack"/>
+</div>

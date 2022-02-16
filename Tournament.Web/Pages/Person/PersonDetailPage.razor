@@ -1,0 +1,50 @@
+﻿@page "/persons/{Id:guid}"
+@namespace Tournament.Web.Pages
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@inherits PageBase
+@inject IStringLocalizer<PersonDetailPageResources> PersonDetailPageLocalizer
+
+@if(Person != null)
+{
+    <div class="container" style="margin-top: 1em">
+        <div class="row justify-content-center">
+            
+            <div class="col col-lg-4 justify-content-end p-4">
+                <img src="@Person.PhotoURL" height="250px" style="margin-right: 0.5em"/>
+            </div>
+
+            <div class="col  col-lg-4">
+                <div class="row">
+                    <h1 class="mb-4">@(Person.FirstName + " " + Person.LastName)</h1>
+                </div>
+                <div class="row">
+                    <div>@Person.Description</div>
+                </div>
+                @if (Person.TeamId != null)
+                {
+                    <div class="row">
+                        <div class="form-group" style="display: flex;">
+                            <h3 class="mb-3" style="margin-top: 1em; margin-right: 0.2em">@PersonDetailPageLocalizer["Team_Label"] @Person.TeamName</h3>
+                            <img src="@Person.TeamLogoURL" height="64px"/>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-8">
+            
+            </div>
+            <div class="col-4 justify-content-start">
+                <div class="text-center text-lg-left">
+                    <button class="btn btn-info" style="white-space: nowrap;" onclick="location.href = '@($"/persons/edit/{Person.Id}")'">
+                        <span class="oi oi-pencil"></span>
+                        @PersonDetailPageLocalizer["Edit_Button"]
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+}

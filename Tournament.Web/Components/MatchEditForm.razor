@@ -1,0 +1,100 @@
+﻿@namespace Tournament.Web
+@using Tournament.Web.Resources.Texts
+@using Microsoft.Extensions.Localization
+@using Tournament.Common.Models.Enums
+@inherits Tournament.Web.Pages.PageBase
+@inject IStringLocalizer<MatchEditPageResources> MatchEditFormLocalizer
+
+<EditForm Model="@Data">
+    <DataAnnotationsValidator/>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" style="white-space: nowrap" for="teama">
+            @MatchEditFormLocalizer["Label_TeamA"]
+        </label>
+        <div class="col-md-4">
+            <InputSelect id="teama" @bind-Value="SelectedATeam" class="form-control">
+                <option value="@Guid.Empty">None</option>
+                @foreach (var team in TeamList)
+                {
+                    <option value="@team.Id">@team.TeamName</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" style="white-space: nowrap" for="teamb">
+            @MatchEditFormLocalizer["Label_TeamB"]
+        </label>
+        <div class="col-md-4">
+            <InputSelect id="teamb" @bind-Value="SelectedBTeam" class="form-control">
+                <option value="@Guid.Empty">None</option>
+                @foreach (var team in TeamList)
+                {
+                    <option value="@team.Id">@team.TeamName</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="place">
+            @MatchEditFormLocalizer["Label_Place"]
+        </label>
+        <div class="col-md-4">
+            <InputSelect id="place" @bind-Value="SelectedPlace" class="form-control">
+                <option value="@Guid.Empty">None</option>
+                @foreach (var place in PlaceList)
+                {
+                    <option value="@place.Id">@place.Name</option>
+                }
+            </InputSelect>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="date">
+            @MatchEditFormLocalizer["Label_Date"]
+        </label>
+        <div class="col-md-4">
+            <input type="date" id="date" class="form-control" placeholder="Select date" @bind-value="@SelectedDate">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="time">
+            @MatchEditFormLocalizer["Label_Time"]
+        </label>
+        <div class="col-md-4">
+            <input type="time" id="time" class="form-control" placeholder="Select time" @bind-value="@SelectedTime">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" for="result">
+            @MatchEditFormLocalizer["Label_Result"]
+        </label>
+        <div class="col-md-4">
+            <InputSelect id="result" @bind-Value="Data.Result" class="form-control">
+                <option value="@Results.None">@MatchEditFormLocalizer["Result_None"]</option>
+                <option value="@Results.Draw">@MatchEditFormLocalizer["Result_Draw"]</option>
+                <option value="@Results.Team1">@MatchEditFormLocalizer["Result_TeamA"]</option>
+                <option value="@Results.Team2">@MatchEditFormLocalizer["Result_TeamB"]</option>
+            </InputSelect>
+        </div>
+    </div>
+
+    @if (Id != Guid.Empty)
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Update">
+            <span class="oi oi-pencil"></span>
+            @MatchEditFormLocalizer["Edit_Button"]
+        </button>
+        <button @onclick="@Delete" class="btn btn-danger ml-1">
+            <span class="oi oi-trash"></span>
+            @MatchEditFormLocalizer["Delete_Button"]
+        </button>
+    }
+    else
+    {
+        <button type="submit" class="btn btn-success" @onclick="@Create">
+            <span class="oi oi-plus"></span>
+            @MatchEditFormLocalizer["Create_Button"]
+        </button>
+    }
+</EditForm>
