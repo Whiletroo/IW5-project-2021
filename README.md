@@ -4,7 +4,7 @@ __Topic:__ Tournament Web Page
 __Team Members:__
 - Daniel Peřina (xperin12)
 - Prokofiev Oleksandr (xproko40)
-- Krukhmalov Kostianty (xkrukh00)
+- Krukhmalov Kostiantyn (xkrukh00)
 
 # Strategy
 Branch strategy
