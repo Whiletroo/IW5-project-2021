@@ -6,13 +6,7 @@ __Team Members:__
 - Prokofiev Oleksandr (xproko40)
 - Krukhmalov Kostianty (xkrukh00)
 
-__Deadlines:__
-1. __31.10.2021__ - API (50b)
-2. __12.12.2021__ - Web Page (50b)
-
 # Strategy
-Meeting: Monday 18.00
-
 Branch strategy
 - Main branch for submissions
 - Develop branch for active development
